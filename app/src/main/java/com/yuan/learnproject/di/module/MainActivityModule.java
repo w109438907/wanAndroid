@@ -22,12 +22,14 @@ public class MainActivityModule {
     @ActivityScope
     @Provides
     public MainContract.MainView provideView() {
+        // 提供 view
         return mView;
     }
 
     @ActivityScope
     @Provides
     public MainContract.MainModel provideModel() {
+        // 提供 model
         return new MainModel();
     }
 }

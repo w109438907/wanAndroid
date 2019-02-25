@@ -8,10 +8,10 @@ import com.yuan.learnproject.base.BaseContract;
  **/
 public interface MainContract extends BaseContract {
     interface MainView extends BaseView {
-
+        // view 操作
     }
 
     interface MainModel extends BaseModel {
-
+        // 获取数据
     }
 }
