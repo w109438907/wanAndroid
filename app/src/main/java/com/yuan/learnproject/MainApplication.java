@@ -22,6 +22,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        // 先 build 一下 project，会生成对应的 DaggerXXX 文件，再进行初始化
         mAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this)).build();
     }

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
  * @author yuan
  * @date 2019/1/27
  **/
-public class BaseMvpPresenter<M, V extends BaseContract.BaseView> {
+public class BaseMvpPresenter<M, V extends BaseContract.BaseView> implements BaseContract.BasePresenter {
     protected M mModel;
     protected V mView;
     protected Context mContext;

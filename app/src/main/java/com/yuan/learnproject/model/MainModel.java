@@ -7,4 +7,5 @@ import com.yuan.learnproject.contract.MainContract;
  * @date 2019/1/27
  **/
 public class MainModel implements MainContract.MainModel {
+    // 获取数据
 }
