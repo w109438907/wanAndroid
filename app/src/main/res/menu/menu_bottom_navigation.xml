@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home_page"
+        android:icon="@drawable/ic_home_page"
+        android:title="@string/home_page" />
+    <item
+        android:id="@+id/action_knowledge_system"
+        android:enabled="true"
+        android:icon="@drawable/ic_knowledge_system"
+        android:title="@string/knowledge_system"/>
+
+    <item
+        android:id="@+id/action_navigation_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_navigation_page"
+        android:title="@string/navigation_page" />
+    <item
+        android:id="@+id/action_project_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_project_page"
+        android:title="@string/project_page" />
+</menu>
