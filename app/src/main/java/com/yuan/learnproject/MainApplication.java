@@ -3,6 +3,7 @@ package com.yuan.learnproject;
 import android.app.Application;
 import android.content.Context;
 
+import com.blankj.utilcode.util.Utils;
 import com.yuan.learnproject.di.component.AppComponent;
 import com.yuan.learnproject.di.component.DaggerAppComponent;
 import com.yuan.learnproject.di.module.AppModule;
@@ -21,6 +22,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Utils.init(this);
         context = getApplicationContext();
         // 先 build 一下 project，会生成对应的 DaggerXXX 文件，再进行初始化
         mAppComponent = DaggerAppComponent.builder()

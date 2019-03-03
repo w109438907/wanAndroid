@@ -2,6 +2,7 @@ package com.yuan.learnproject.di.component;
 
 import android.app.Application;
 
+import com.yuan.learnproject.api.ApiService;
 import com.yuan.learnproject.di.module.AppModule;
 import com.yuan.learnproject.di.module.HttpModule;
 
@@ -16,5 +17,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class, HttpModule.class})
 public interface AppComponent {
+    ApiService getApiService();
     Application getApplication();
 }

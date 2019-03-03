@@ -21,7 +21,7 @@ public abstract class BaseActivity <T extends BaseMvpPresenter> extends AppCompa
     protected MainApplication mApplication;
 
     @Inject
-    T mPresenter;
+    public T mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

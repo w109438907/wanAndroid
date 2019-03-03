@@ -6,7 +6,7 @@ package com.yuan.learnproject.base;
  **/
 public interface BaseContract {
     interface BaseView {
-
+        void onError(String msg);
     }
 
     interface BaseModel {

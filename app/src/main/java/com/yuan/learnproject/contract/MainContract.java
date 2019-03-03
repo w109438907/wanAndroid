@@ -9,9 +9,16 @@ import com.yuan.learnproject.base.BaseContract;
 public interface MainContract extends BaseContract {
     interface MainView extends BaseView {
         // view 操作
+        void requestPermissionSuccess();
+
+        void requestPermissionFail();
     }
 
     interface MainModel extends BaseModel {
         // 获取数据
+    }
+
+    interface MainPresenter extends BasePresenter {
+        void requestPermission();
     }
 }

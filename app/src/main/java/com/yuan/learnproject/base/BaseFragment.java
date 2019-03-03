@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yuan.learnproject.MainApplication;
+import com.yuan.learnproject.di.component.AppComponent;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -20,9 +23,10 @@ import butterknife.Unbinder;
 public abstract class BaseFragment<T extends BaseMvpPresenter> extends Fragment implements BaseContract.BaseView {
     private Unbinder mUnbinder;
     private View mView;
+    private MainApplication mApplication;
 
     @Inject
-    T mPresenter;
+    public T mPresenter;
 
     @Nullable
     @Override
@@ -35,6 +39,8 @@ public abstract class BaseFragment<T extends BaseMvpPresenter> extends Fragment 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        this.mApplication = (MainApplication) getActivity().getApplication();
+        setupActivityComponent(mApplication.getAppComponent());
         init();
     }
 
@@ -46,6 +52,7 @@ public abstract class BaseFragment<T extends BaseMvpPresenter> extends Fragment 
         }
     }
 
+    public abstract void setupActivityComponent(AppComponent appComponent);
     protected abstract int getLayout();
     protected abstract void init();
 }
