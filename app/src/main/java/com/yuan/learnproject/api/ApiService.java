@@ -43,5 +43,17 @@ public interface ApiService {
                                                      @Field("repassword") String rePassword);
 
     @POST("lg/collect/{articleId}/json")
-    Observable<BaseBean<?>> collectArticle (@Path("articleId") int articleId);
+    Observable<BaseBean<Object>> collectArticle (@Path("articleId") int articleId);
+
+    @POST("lg/uncollect_originId/{articleId}/json")
+    Observable<BaseBean<Object>> cancelCollectArticle (@Path("articleId") int articleId);
+
+    @POST("lg/uncollect/{articleId}/json")
+    Observable<BaseBean<Object>> deleteCollectArticle (@Path("articleId") int articleId,
+                                                       @Field("originId") int originId);
+
+    @POST("lg/collect/add/json")
+    Observable<BaseBean<Object>> collectOutSideArticle (@Field("title") String title,
+                                                        @Field("author") String author,
+                                                        @Field("link") String link);
 }

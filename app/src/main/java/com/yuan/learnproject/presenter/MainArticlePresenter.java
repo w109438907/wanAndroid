@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiFunction;
 
-public class MainArticlePresenter extends BaseMvpPresenter
+public class MainArticlePresenter extends CommonCollectPresenter
         <MainArticleContract.MainArticleModel, MainArticleContract.MainArticleView>
         implements MainArticleContract.MainArticlePresenter{
 

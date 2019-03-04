@@ -46,5 +46,7 @@ public class ArticleQuickAdapter extends BaseQuickAdapter<MainArticleDataBean, B
         } else {
             helper.setGone(R.id.article_tag_2, false);
         }
+        helper.setImageResource(R.id.collection, item.isCollect() ? R.drawable.ic_have_favorited : R.drawable.ic_action_favorite);
+        helper.addOnClickListener(R.id.collection);
     }
 }

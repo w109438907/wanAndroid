@@ -15,10 +15,11 @@ import io.reactivex.Observable;
  * @author yuan
  * @date 2019/3/1
  **/
-public class MainArticleModel implements MainArticleContract.MainArticleModel {
+public class MainArticleModel extends CommonCollectModel implements MainArticleContract.MainArticleModel {
     private ApiService mApiService;
 
     public MainArticleModel(ApiService mApiService) {
+        super(mApiService);
         this.mApiService = mApiService;
     }
 

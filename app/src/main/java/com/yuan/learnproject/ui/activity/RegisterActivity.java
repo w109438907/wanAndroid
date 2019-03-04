@@ -11,13 +11,13 @@ import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseActivity;
 import com.yuan.learnproject.bean.LoginResponseBean;
 import com.yuan.learnproject.constant.GlobalConstant;
-import com.yuan.learnproject.contract.LoginContract;
+import com.yuan.learnproject.contract.RegisterContract;
 import com.yuan.learnproject.di.component.AppComponent;
-import com.yuan.learnproject.di.component.DaggerLoginComponent;
-import com.yuan.learnproject.di.module.LoginModule;
+import com.yuan.learnproject.di.component.DaggerRegisterComponent;
+import com.yuan.learnproject.di.module.RegisterModule;
 import com.yuan.learnproject.eventbus.EventBusHelper;
 import com.yuan.learnproject.eventbus.LoginEvent;
-import com.yuan.learnproject.presenter.LoginPresenter;
+import com.yuan.learnproject.presenter.RegisterPresenter;
 
 import androidx.appcompat.widget.AppCompatButton;
 import butterknife.BindView;
@@ -27,50 +27,46 @@ import butterknife.OnClick;
  * @author yuan
  * @date 2019/3/3
  **/
-public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.LoginView {
+public class RegisterActivity extends BaseActivity<RegisterPresenter> implements RegisterContract.RegisterView {
 
-    @BindView(R.id.user_name)
-    EditText mUserName;
+    @BindView(R.id.input_name)
+    EditText mInputName;
     @BindView(R.id.input_password)
     EditText mInputPassword;
+    @BindView(R.id.input_confirm_password)
+    EditText mInputConfirmPassword;
     @BindView(R.id.error_msg)
     TextView mErrorMsg;
-    @BindView(R.id.btn_login)
-    AppCompatButton mBtnLogin;
-    @BindView(R.id.signup)
-    TextView mSignup;
+    @BindView(R.id.btn_signup)
+    AppCompatButton mBtnSignup;
+    @BindView(R.id.link_login)
+    TextView mLinkLogin;
 
     private ProgressDialog mProgressDialog;
 
     @Override
     protected int getLayout() {
-        return R.layout.activity_login;
+        return R.layout.activity_signup;
     }
 
     @Override
     protected void init() {
-        mProgressDialog = new ProgressDialog(LoginActivity.this,
+        mProgressDialog = new ProgressDialog(RegisterActivity.this,
                 R.style.Theme_AppCompat_DayNight_Dialog);
         mProgressDialog.setIndeterminate(true);
     }
 
     @Override
     protected void setupActivityComponent(AppComponent appComponent) {
-        DaggerLoginComponent.builder()
+        DaggerRegisterComponent.builder()
                 .appComponent(appComponent)
-                .loginModule(new LoginModule(this))
+                .registerModule(new RegisterModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
-    public void onError(String msg) {
-        showProgress(false);
-        mErrorMsg.setText(msg);
-    }
-
-    @Override
-    public void onLoginSuccess(LoginResponseBean loginResponseBean) {
+    public void onSuccess(LoginResponseBean loginResponseBean) {
         SPUtils.getInstance(GlobalConstant.COMMON_SHARED_PREFERENCE)
                 .put(GlobalConstant.USER_INFO, mGson.toJson(loginResponseBean, LoginResponseBean.class));
         EventBusHelper.getInstance().post(new LoginEvent(true));
@@ -86,16 +82,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
-    @OnClick({R.id.btn_login, R.id.signup})
+    @Override
+    public void onError(String msg) {
+        showProgress(false);
+        mErrorMsg.setText(msg);
+    }
+
+    @OnClick({R.id.btn_signup, R.id.link_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_login:
+            case R.id.btn_signup:
                 if (isValidate()) {
-                    mPresenter.doLogin(mUserName.getText().toString(), mInputPassword.getText().toString());
+                    mPresenter.doRegister(mInputName.getText().toString(),
+                            mInputPassword.getText().toString(),
+                            mInputConfirmPassword.getText().toString());
                 }
                 break;
-            case R.id.signup:
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            case R.id.link_login:
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
@@ -106,12 +110,21 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     private boolean isValidate() {
         mErrorMsg.setText("");
-        if ("".equals(mUserName.getText().toString())) {
-            mUserName.setError(getString(R.string.empty_username));
+        if ("".equals(mInputName.getText().toString())) {
+            mInputName.setError(getString(R.string.empty_username));
             return false;
         }
         if ("".equals(mInputPassword.getText().toString())) {
             mInputPassword.setError(getString(R.string.empty_password));
+            return false;
+        }
+        if ("".equals(mInputConfirmPassword.getText().toString())) {
+            mInputConfirmPassword.setError(getString(R.string.empty_password));
+            return false;
+        }
+
+        if (!mInputPassword.getText().toString().equals(mInputConfirmPassword.getText().toString())) {
+            mInputConfirmPassword.setError(getString(R.string.mismatch_password));
             return false;
         }
         return true;

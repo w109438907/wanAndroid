@@ -2,6 +2,7 @@ package com.yuan.learnproject.base;
 
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.yuan.learnproject.MainApplication;
 import com.yuan.learnproject.di.component.AppComponent;
 
@@ -19,6 +20,7 @@ import butterknife.Unbinder;
 public abstract class BaseActivity <T extends BaseMvpPresenter> extends AppCompatActivity implements BaseContract.BaseView {
     private Unbinder mUnbinder;
     protected MainApplication mApplication;
+    protected Gson mGson;
 
     @Inject
     public T mPresenter;
@@ -30,6 +32,7 @@ public abstract class BaseActivity <T extends BaseMvpPresenter> extends AppCompa
         mUnbinder = ButterKnife.bind(this);
         mApplication = (MainApplication) getApplication();
         setupActivityComponent(mApplication.getAppComponent());
+        mGson = mApplication.getAppComponent().getGson();
         init();
     }
 

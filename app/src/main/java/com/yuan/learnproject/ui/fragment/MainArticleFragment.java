@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -29,6 +30,7 @@ import com.yuan.learnproject.di.component.DaggerMainArticleComponent;
 import com.yuan.learnproject.di.module.MainArticleModule;
 import com.yuan.learnproject.presenter.MainArticlePresenter;
 import com.yuan.learnproject.ui.activity.DetailActivity;
+import com.yuan.learnproject.ui.activity.MainActivity;
 import com.yuan.learnproject.ui.adapter.ArticleQuickAdapter;
 
 import java.util.ArrayList;
@@ -99,7 +101,20 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
+                if (view.getId() == R.id.collection) {
+                    if (MainActivity.hasLogin) {
+                        MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
+                        if (data.isCollect()){
+//                            mPresenter.cancelCollect(data.getId());
+                        }else {
+//                            mPresenter.addCollect(data.getId());
+                        }
+                        data.setCollect(!data.isCollect());
+                        mAdapter.setData(position, data);
+                    }else {
+                        Toast.makeText(getActivity(), "please login first", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -211,5 +226,15 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(false);
         }
+    }
+
+    @Override
+    public void collectArticleSuccess() {
+
+    }
+
+    @Override
+    public void cancelCollectArticleSuccess() {
+
     }
 }

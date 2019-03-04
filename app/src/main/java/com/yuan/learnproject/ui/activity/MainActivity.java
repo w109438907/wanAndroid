@@ -1,7 +1,6 @@
 package com.yuan.learnproject.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,20 +8,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseActivity;
 import com.yuan.learnproject.bean.FragmentInfoBean;
+import com.yuan.learnproject.bean.LoginResponseBean;
+import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.contract.MainContract;
 import com.yuan.learnproject.di.component.AppComponent;
 import com.yuan.learnproject.di.component.DaggerMainActivityComponent;
 import com.yuan.learnproject.di.module.MainActivityModule;
+import com.yuan.learnproject.eventbus.EventBusHelper;
 import com.yuan.learnproject.eventbus.LoginEvent;
 import com.yuan.learnproject.presenter.MainPresenter;
 import com.yuan.learnproject.ui.adapter.ViewPagerAdapter;
 import com.yuan.learnproject.ui.fragment.MainArticleFragment;
+import com.yuan.learnproject.ui.widget.CustomScrollViewPager;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,9 +40,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
 
@@ -49,7 +51,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @BindView(R.id.appBar)
     AppBarLayout mAppBar;
     @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+    CustomScrollViewPager mViewPager;
     @BindView(R.id.navigation)
     BottomNavigationView mBottomNavigationView;
     @BindView(R.id.navigation_view)
@@ -80,7 +82,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private ImageView mUserHeadView;
     private TextView mTextUserName;
     private LinearLayout mUserLayout;
-    private boolean hasLogin = false;
+    public static boolean hasLogin = false;
 
     private void initDrawerLayout() {
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -122,6 +124,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private void initTabLayout() {
         //ViewPager and tab layout
         PagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), initFragments());
+        mViewPager.setScrollable(false);
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mViewPager.setAdapter(adapter);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -164,6 +167,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void requestPermissionSuccess() {
+        EventBusHelper.getInstance().register(MainActivity.this);
         initToolBar();
         initTabLayout();
         initDrawerLayout();
@@ -183,7 +187,19 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void updateResolutionPref(LoginEvent loginEvent){
         if (loginEvent.isLogin()) {
             hasLogin = true;
+            String userInfo = SPUtils.getInstance(GlobalConstant.COMMON_SHARED_PREFERENCE)
+                    .getString(GlobalConstant.USER_INFO, "");
+            LoginResponseBean bean = mGson.fromJson(userInfo, LoginResponseBean.class);
+            if (mTextUserName != null && bean != null) {
+                mTextUserName.setText(bean.getUsername());
+            }
             Log.e("derek", "updateResolutionPref: " );
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBusHelper.getInstance().unregister(MainActivity.this);
+        super.onDestroy();
     }
 }

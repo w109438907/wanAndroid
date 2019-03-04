@@ -1,6 +1,5 @@
 package com.yuan.learnproject.contract;
 
-import com.yuan.learnproject.base.BaseContract;
 import com.yuan.learnproject.bean.BaseBean;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
@@ -10,14 +9,14 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public interface MainArticleContract extends BaseContract {
-    interface MainArticleView extends BaseView {
+public interface MainArticleContract extends CommonCollectContract {
+    interface MainArticleView extends CommonCollectView {
         void showResult(MainArticleBean mainArticleBean);
         void showBanner(List<MainBannerBean> mainBannerBean);
         void getBannerError();
     }
 
-    interface MainArticleModel extends BaseModel {
+    interface MainArticleModel extends CommonCollectModel {
         Observable<BaseBean<MainArticleBean>> getMainArticle(int page);
 
         Observable<BaseBean<List<MainArticleDataBean>>> getTopArticles();
@@ -25,7 +24,7 @@ public interface MainArticleContract extends BaseContract {
         Observable<BaseBean<List<MainBannerBean>>> getBanner();
     }
 
-    interface MainArticlePresenter extends BasePresenter {
+    interface MainArticlePresenter extends CommonCollectPresenter {
         void requestData(int page);
         void requestBanner();
         void requestHomeData();
