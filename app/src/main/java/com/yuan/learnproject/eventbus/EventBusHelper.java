@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
  * @date 2019/3/3
  **/
 public class EventBusHelper {
-    private static EventBusHelper INSTANCE = null;
+    private static volatile EventBusHelper INSTANCE = null;
 
     private EventBus mBus = null;
 

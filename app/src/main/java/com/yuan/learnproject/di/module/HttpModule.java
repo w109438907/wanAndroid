@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.yuan.learnproject.api.ApiService;
+import com.yuan.learnproject.http.CookieInterceptor;
+import com.yuan.learnproject.http.HeaderInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +29,8 @@ public class HttpModule {
     @Singleton
     public OkHttpClient provideOkHttpClient(Application application, Gson gson) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new CookieInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS);
         return builder.build();

@@ -105,9 +105,9 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
                     if (MainActivity.hasLogin) {
                         MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
                         if (data.isCollect()){
-//                            mPresenter.cancelCollect(data.getId());
+                            mPresenter.cancelCollect(data.getId());
                         }else {
-//                            mPresenter.addCollect(data.getId());
+                            mPresenter.addCollect(data.getId());
                         }
                         data.setCollect(!data.isCollect());
                         mAdapter.setData(position, data);
@@ -230,11 +230,11 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
 
     @Override
     public void collectArticleSuccess() {
-
+        Toast.makeText(getActivity(), "collect success!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void cancelCollectArticleSuccess() {
-
+        Toast.makeText(getActivity(), "cancel collect success!", Toast.LENGTH_SHORT).show();
     }
 }
