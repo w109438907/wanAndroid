@@ -25,6 +25,7 @@ import com.yuan.learnproject.eventbus.EventBusHelper;
 import com.yuan.learnproject.eventbus.LoginEvent;
 import com.yuan.learnproject.presenter.MainPresenter;
 import com.yuan.learnproject.ui.adapter.ViewPagerAdapter;
+import com.yuan.learnproject.ui.fragment.KnowledgeTreeFragment;
 import com.yuan.learnproject.ui.fragment.MainArticleFragment;
 import com.yuan.learnproject.ui.widget.CustomScrollViewPager;
 
@@ -156,7 +157,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         List<FragmentInfoBean> mFragments = new ArrayList<>(4);
 
         mFragments.add(new FragmentInfoBean("推荐", MainArticleFragment.class));
-        mFragments.add(new FragmentInfoBean("项目", Fragment.class));
+        mFragments.add(new FragmentInfoBean("项目", KnowledgeTreeFragment.class));
 
 
         mFragments.add(new FragmentInfoBean("公众号", Fragment.class));
@@ -171,6 +172,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         initToolBar();
         initTabLayout();
         initDrawerLayout();
+        String userInfo = SPUtils.getInstance(GlobalConstant.COMMON_SHARED_PREFERENCE)
+                .getString(GlobalConstant.USER_INFO, "");
+        LoginResponseBean bean = mGson.fromJson(userInfo, LoginResponseBean.class);
+        if (bean != null) {
+            hasLogin = true;
+            if (mTextUserName != null) {
+                mTextUserName.setText(bean.getUsername());
+            }
+        }
     }
 
     @Override

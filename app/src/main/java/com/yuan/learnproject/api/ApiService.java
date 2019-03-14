@@ -5,6 +5,7 @@ import com.yuan.learnproject.bean.LoginResponseBean;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.bean.articles.MainBannerBean;
+import com.yuan.learnproject.bean.knowledge.TreesBean;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * @author yuan
@@ -56,4 +58,19 @@ public interface ApiService {
     Observable<BaseBean<Object>> collectOutSideArticle (@Field("title") String title,
                                                         @Field("author") String author,
                                                         @Field("link") String link);
+
+    /**
+     * 获取知识体系
+     * http://www.wanandroid.com/tree/json
+     */
+    @GET("tree/json")
+    Observable<BaseBean<List<TreesBean>>> getKnowledgeTree();
+
+    /**
+     * 知识体系下的文章
+     * http://www.wanandroid.com/article/list/0/json?cid=168
+     */
+    @GET("article/list/{page}/json")
+    Observable<BaseBean<?>> getKnowledgeList(@Path("page") int page,
+                                             @Query("cid") int cid);
 }
