@@ -1,7 +1,5 @@
 package com.yuan.learnproject.presenter;
 
-import android.Manifest;
-
 import com.blankj.utilcode.util.PermissionUtils;
 import com.yuan.learnproject.base.BaseMvpPresenter;
 import com.yuan.learnproject.contract.MainContract;

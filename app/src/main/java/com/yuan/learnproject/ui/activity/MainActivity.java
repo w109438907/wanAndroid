@@ -13,7 +13,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.yuan.learnproject.R;
-import com.yuan.learnproject.base.BaseActivity;
+import com.yuan.learnproject.base.BaseMvpActivity;
 import com.yuan.learnproject.bean.FragmentInfoBean;
 import com.yuan.learnproject.bean.LoginResponseBean;
 import com.yuan.learnproject.constant.GlobalConstant;
@@ -43,7 +43,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.MainView {
+public class MainActivity extends BaseMvpActivity<MainPresenter> implements MainContract.MainView {
 
     @BindView(R.id.title)
     TextView mTitle;

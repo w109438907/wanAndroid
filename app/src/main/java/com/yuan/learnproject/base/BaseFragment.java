@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.yuan.learnproject.MainApplication;
 import com.yuan.learnproject.di.component.AppComponent;
 
@@ -24,6 +25,7 @@ public abstract class BaseFragment<T extends BaseMvpPresenter> extends Fragment 
     private Unbinder mUnbinder;
     private View mView;
     private MainApplication mApplication;
+    protected Gson mGson;
 
     @Inject
     public T mPresenter;
@@ -41,6 +43,7 @@ public abstract class BaseFragment<T extends BaseMvpPresenter> extends Fragment 
         super.onActivityCreated(savedInstanceState);
         this.mApplication = (MainApplication) getActivity().getApplication();
         setupActivityComponent(mApplication.getAppComponent());
+        mGson = mApplication.getAppComponent().getGson();
         init();
     }
 

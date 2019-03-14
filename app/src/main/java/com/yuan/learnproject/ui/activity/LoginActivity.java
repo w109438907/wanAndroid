@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.yuan.learnproject.R;
-import com.yuan.learnproject.base.BaseActivity;
+import com.yuan.learnproject.base.BaseMvpActivity;
 import com.yuan.learnproject.bean.LoginResponseBean;
 import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.contract.LoginContract;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * @author yuan
  * @date 2019/3/3
  **/
-public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.LoginView {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter> implements LoginContract.LoginView {
 
     @BindView(R.id.user_name)
     EditText mUserName;

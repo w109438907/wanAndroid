@@ -1,6 +1,6 @@
 package com.yuan.learnproject.ui.fragment;
 
-import android.util.Log;
+import android.content.Intent;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -12,11 +12,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.knowledge.TreesBean;
+import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.contract.KnowledgeTreeContract;
 import com.yuan.learnproject.di.component.AppComponent;
 import com.yuan.learnproject.di.component.DaggerKnowledgeTreeComponent;
 import com.yuan.learnproject.di.module.KnowledgeTreeModule;
 import com.yuan.learnproject.presenter.KnowledgeTreePresenter;
+import com.yuan.learnproject.ui.activity.KnowledgeActivity;
 import com.yuan.learnproject.ui.adapter.KnowledgeTreeQuickAdapter;
 
 import java.util.List;
@@ -73,14 +75,13 @@ public class KnowledgeTreeFragment extends BaseFragment<KnowledgeTreePresenter> 
         mSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+                mPresenter.getKnowledgeData();
             }
         });
         mSmartRefresh.setEnableLoadMore(false);
     }
 
     private void initRecycleView() {
-        View mBannerView = getLayoutInflater().inflate(R.layout.main_article_banner, null);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()) {
             @Override
             public boolean canScrollVertically() {
@@ -92,30 +93,20 @@ public class KnowledgeTreeFragment extends BaseFragment<KnowledgeTreePresenter> 
         mAdapter = new KnowledgeTreeQuickAdapter(getActivity());
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.disableLoadMoreIfNotFullPage();
-        mAdapter.setPreLoadNumber(5);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                TreesBean treesBean = mAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), KnowledgeActivity.class);
+                intent.putExtra(GlobalConstant.CONTENT_DATA_KEY, mGson.toJson(treesBean, TreesBean.class));
+                startActivity(intent);
             }
         });
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
-            }
-        });
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                Log.e(TAG, "onLoadMoreRequested: ");
-            }
-        }, mRecyclerView);
-        mAdapter.addHeaderView(mBannerView);
     }
 
     @Override
     public void showTreeData(List<TreesBean> treesBeans) {
-
+        mSmartRefresh.finishRefresh();
+        mAdapter.replaceData(treesBeans);
     }
 }

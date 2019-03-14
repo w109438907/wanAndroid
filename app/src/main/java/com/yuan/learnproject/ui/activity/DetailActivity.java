@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseActivity;
+import com.yuan.learnproject.base.BaseMvpActivity;
 import com.yuan.learnproject.di.component.AppComponent;
 
 import androidx.annotation.Nullable;
@@ -86,11 +87,6 @@ public class DetailActivity extends BaseActivity {
     }
 
     @Override
-    protected void setupActivityComponent(AppComponent appComponent) {
-
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
@@ -107,10 +103,6 @@ public class DetailActivity extends BaseActivity {
         mWebView.loadUrl(url);
     }
 
-    @Override
-    public void onError(String msg) {
-
-    }
 
     private class MyWebChromeClient extends WebChromeClient {
         @Override
