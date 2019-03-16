@@ -13,15 +13,15 @@ import io.reactivex.Observable;
  * @date 2019/3/8
  **/
 public interface KnowledgeTreeContract extends BaseContract {
-    interface KnowledgeView extends BaseView {
+    interface KnowledgeTreeView extends BaseView {
         void showTreeData(List<TreesBean> treesBeans);
     }
 
-    interface KnowledgeModel extends BaseModel {
+    interface KnowledgeTreeModel extends BaseModel {
         Observable<BaseBean<List<TreesBean>>> getKnowledgeTree();
     }
 
-    interface KnowledgePresenter extends BasePresenter {
+    interface KnowledgeTreePresenter extends BasePresenter {
         void getKnowledgeData();
     }
 }

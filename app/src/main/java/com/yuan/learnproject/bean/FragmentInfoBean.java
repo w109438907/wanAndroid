@@ -8,6 +8,7 @@ public class FragmentInfoBean {
     private String title;
 
     private Class fragment;
+    private int id;
 
     public FragmentInfoBean(String title, Class fragment) {
         this.title = title;
@@ -28,5 +29,13 @@ public class FragmentInfoBean {
 
     public void setFragment(Class fragment) {
         this.fragment = fragment;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -3,7 +3,6 @@ package com.yuan.learnproject.di.module;
 import com.yuan.learnproject.api.ApiService;
 import com.yuan.learnproject.contract.KnowledgeTreeContract;
 import com.yuan.learnproject.di.scope.FragmentScope;
-import com.yuan.learnproject.model.KnowledgeTreeModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,21 +13,21 @@ import dagger.Provides;
  **/
 @Module
 public class KnowledgeTreeModule {
-    private KnowledgeTreeContract.KnowledgeView mView;
+    private KnowledgeTreeContract.KnowledgeTreeView mView;
 
-    public KnowledgeTreeModule(KnowledgeTreeContract.KnowledgeView view) {
+    public KnowledgeTreeModule(KnowledgeTreeContract.KnowledgeTreeView view) {
         this.mView = view;
     }
 
     @FragmentScope
     @Provides
-    public KnowledgeTreeContract.KnowledgeView provideView() {
+    public KnowledgeTreeContract.KnowledgeTreeView provideView() {
         return mView;
     }
 
     @FragmentScope
     @Provides
-    public KnowledgeTreeContract.KnowledgeModel provideMainArticleModel(ApiService apiService) {
-        return new KnowledgeTreeModel(apiService);
+    public KnowledgeTreeContract.KnowledgeTreeModel provideMainArticleModel(ApiService apiService) {
+        return new com.yuan.learnproject.model.KnowledgeTreeModel(apiService);
     }
 }

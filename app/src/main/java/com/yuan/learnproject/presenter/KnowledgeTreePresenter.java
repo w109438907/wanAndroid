@@ -14,11 +14,11 @@ import javax.inject.Inject;
  * @author yuan
  * @date 2019/3/8
  **/
-public class KnowledgeTreePresenter extends BaseMvpPresenter<KnowledgeTreeContract.KnowledgeModel, KnowledgeTreeContract.KnowledgeView>
-        implements KnowledgeTreeContract.KnowledgePresenter{
+public class KnowledgeTreePresenter extends BaseMvpPresenter<KnowledgeTreeContract.KnowledgeTreeModel, KnowledgeTreeContract.KnowledgeTreeView>
+        implements KnowledgeTreeContract.KnowledgeTreePresenter {
 
     @Inject
-    public KnowledgeTreePresenter(KnowledgeTreeContract.KnowledgeModel model, KnowledgeTreeContract.KnowledgeView view) {
+    public KnowledgeTreePresenter(KnowledgeTreeContract.KnowledgeTreeModel model, KnowledgeTreeContract.KnowledgeTreeView view) {
         super(model, view);
     }
 

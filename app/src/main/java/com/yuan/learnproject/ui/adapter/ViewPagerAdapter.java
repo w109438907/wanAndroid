@@ -1,6 +1,7 @@
 package com.yuan.learnproject.ui.adapter;
 
 import com.yuan.learnproject.bean.FragmentInfoBean;
+import com.yuan.learnproject.ui.fragment.KnowledgeFragment;
 
 import java.util.List;
 
@@ -26,7 +27,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         try {
-            return (Fragment) mFragments.get(position).getFragment().newInstance();
+            Fragment fragment = (Fragment) mFragments.get(position).getFragment().newInstance();
+            if (fragment instanceof KnowledgeFragment) {
+                ((KnowledgeFragment)fragment).setCid(mFragments.get(position).getId());
+            }
+            return fragment;
 
         } catch (InstantiationException e) {
             e.printStackTrace();

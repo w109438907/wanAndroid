@@ -34,7 +34,7 @@ import butterknife.BindView;
  * @author yuan
  * @date 2019/3/8
  **/
-public class KnowledgeTreeFragment extends BaseFragment<KnowledgeTreePresenter> implements KnowledgeTreeContract.KnowledgeView {
+public class KnowledgeTreeFragment extends BaseFragment<KnowledgeTreePresenter> implements KnowledgeTreeContract.KnowledgeTreeView {
     private final static String TAG = KnowledgeTreeFragment.class.getCanonicalName();
     private KnowledgeTreeQuickAdapter mAdapter;
 

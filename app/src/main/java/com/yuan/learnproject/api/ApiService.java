@@ -71,6 +71,6 @@ public interface ApiService {
      * http://www.wanandroid.com/article/list/0/json?cid=168
      */
     @GET("article/list/{page}/json")
-    Observable<BaseBean<?>> getKnowledgeList(@Path("page") int page,
-                                             @Query("cid") int cid);
+    Observable<BaseBean<MainArticleBean>> getKnowledgeList(@Path("page") int page,
+                                                           @Query("cid") int cid);
 }
