@@ -1,5 +1,6 @@
 package com.yuan.learnproject.bean.articles;
 
+import java.io.Serializable;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -8,7 +9,7 @@ import androidx.annotation.Nullable;
  * @author yuan
  * @date 2019/3/1
  **/
-public class MainArticleDataBean {
+public class MainArticleDataBean implements Serializable {
     /**
      * apkLink :
      * author :  kinsomy

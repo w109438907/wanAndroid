@@ -1,10 +1,12 @@
 package com.yuan.learnproject.bean.articles;
 
+import java.io.Serializable;
+
 /**
  * @author yuan
  * @date 2019/3/1
  **/
-public class MainBannerBean {
+public class MainBannerBean implements Serializable {
 
     /**
      * desc : 一起来做个App吧

@@ -51,6 +51,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     private int currentPageIndex = 0;
     private KnowledgeQuickAdapter mAdapter;
     private MainArticleDataBean cacheData;
+    private boolean isRefresh = false;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -121,6 +122,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             public void onLoadMoreRequested() {
                 Log.e(TAG, "onLoadMoreRequested: "  + currentPageIndex);
                 currentPageIndex++;
+                isRefresh = false;
                 mPresenter.getKnowledgeList(currentPageIndex, cid);
             }
         }, mRecyclerView);
@@ -140,6 +142,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         mSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                isRefresh = true;
                 mPresenter.getKnowledgeList(0, cid);
             }
         });
@@ -166,18 +169,12 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             }
             return;
         }
-        boolean dataUpdated = false;
-        if (mainArticleBean.getCurPage() - 1 == 0) {
-            if (cacheData != null) {
-                dataUpdated = !cacheData.equals(data.get(0));
-            }
-            cacheData = data.get(0);
-        }
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
-        Log.e(TAG, dataUpdated + ", showResult: " + mainArticleBean.toString());
-        if (dataUpdated) {
+        Log.e(TAG, isRefresh + ", showResult: " + mainArticleBean.toString());
+        if (isRefresh) {
+            isRefresh = false;
             mAdapter.replaceData(data);
         } else {
             mAdapter.addData(data);

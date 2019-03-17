@@ -1,12 +1,13 @@
 package com.yuan.learnproject.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author yuan
  * @date 2019/3/2
  **/
-public class LoginResponseBean {
+public class LoginResponseBean implements Serializable {
 
     /**
      * chapterTops : []

@@ -53,6 +53,8 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
 
     private Banner mBanner;
     private ArticleQuickAdapter mAdapter;
+    private boolean isRefresh = false;
+
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
         DaggerMainArticleComponent
@@ -122,6 +124,7 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
             public void onLoadMoreRequested() {
                 Log.e(TAG, "onLoadMoreRequested: "  + currentPageIndex);
                 currentPageIndex++;
+                isRefresh = false;
                 mPresenter.requestData(currentPageIndex);
             }
         }, mRecyclerView);
@@ -134,6 +137,7 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         mSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                isRefresh = true;
                 mPresenter.requestBanner();
                 mPresenter.requestHomeData();
             }
@@ -170,18 +174,12 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
             }
             return;
         }
-        boolean dataUpdated = false;
-        if (mainArticleBean.getCurPage() - 1 == 0) {
-            if (cacheData != null) {
-                dataUpdated = !cacheData.equals(data.get(0));
-            }
-            cacheData = data.get(0);
-        }
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
-        Log.e(TAG, dataUpdated + ", showResult: " + mainArticleBean.toString());
-        if (dataUpdated) {
+        Log.e(TAG, isRefresh + ", showResult: " + mainArticleBean.toString());
+        if (isRefresh) {
+            isRefresh = false;
             mAdapter.replaceData(data);
         } else {
             mAdapter.addData(data);

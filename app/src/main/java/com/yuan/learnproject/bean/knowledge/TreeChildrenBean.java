@@ -1,12 +1,13 @@
 package com.yuan.learnproject.bean.knowledge;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author yuan
  * @date 2019/3/8
  **/
-public class TreeChildrenBean {
+public class TreeChildrenBean implements Serializable {
     /**
      * children : []
      * courseId : 13

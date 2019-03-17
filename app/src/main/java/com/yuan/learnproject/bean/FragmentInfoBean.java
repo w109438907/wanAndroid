@@ -1,10 +1,12 @@
 package com.yuan.learnproject.bean;
 
+import java.io.Serializable;
+
 /**
  * @author yuan
  * @date 2019/3/3
  **/
-public class FragmentInfoBean {
+public class FragmentInfoBean implements Serializable {
     private String title;
 
     private Class fragment;
