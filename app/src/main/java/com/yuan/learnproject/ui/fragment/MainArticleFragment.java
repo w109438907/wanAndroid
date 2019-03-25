@@ -179,7 +179,6 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
-        Log.e(TAG, isRefresh + ", showResult: " + mainArticleBean.toString());
         if (isRefresh) {
             isRefresh = false;
             mAdapter.replaceData(data);

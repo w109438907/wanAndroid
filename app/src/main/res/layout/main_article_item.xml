@@ -10,20 +10,19 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_marginStart="10dp"
         android:id="@+id/title"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="这交互炸了系列 第十二式之年年有鱼"
-        android:paddingTop="6dp"
-        android:paddingBottom="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginStart="10dp"
         android:lineSpacingExtra="2dp"
         android:maxLines="2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
+        android:text="这交互炸了系列 第十二式之年年有鱼"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/author"/>
+        app:layout_constraintTop_toBottomOf="@id/author" />
     <TextView
         android:layout_marginStart="10dp"
         android:id="@+id/article_tag_1"

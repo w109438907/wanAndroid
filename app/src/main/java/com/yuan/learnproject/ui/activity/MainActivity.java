@@ -28,6 +28,7 @@ import com.yuan.learnproject.ui.adapter.ViewPagerAdapter;
 import com.yuan.learnproject.ui.fragment.KnowledgeTreeFragment;
 import com.yuan.learnproject.ui.fragment.MainArticleFragment;
 import com.yuan.learnproject.ui.fragment.NavigationFragment;
+import com.yuan.learnproject.ui.fragment.ProjectTreeFragment;
 import com.yuan.learnproject.ui.widget.CustomScrollViewPager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -40,7 +41,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import butterknife.BindView;
 
@@ -162,7 +162,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
 
 
         mFragments.add(new FragmentInfoBean("Navigation", NavigationFragment.class));
-        mFragments.add(new FragmentInfoBean("知识体系", Fragment.class));
+        mFragments.add(new FragmentInfoBean("Project", ProjectTreeFragment.class));
 
         return mFragments;
     }
