@@ -7,6 +7,7 @@ import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.bean.articles.MainBannerBean;
 import com.yuan.learnproject.bean.knowledge.TreesBean;
+import com.yuan.learnproject.bean.project.ProjectTreeBean;
 
 import java.util.List;
 
@@ -141,5 +142,22 @@ public interface ApiService {
      * http://www.wanandroid.com/navi/json
      */
     @GET("navi/json")
-    Observable<BaseBean<NavigationBean>> getNavigation();
+    Observable<BaseBean<List<NavigationBean>>> getNavigation();
+
+    /**
+     * 项目数据
+     * http://www.wanandroid.com/project/tree/json
+     */
+    @GET("project/tree/json")
+    Observable<BaseBean<List<ProjectTreeBean>>> getProjectTree();
+
+    /**
+     * 项目列表数据
+     * http://www.wanandroid.com/project/list/1/json?cid=294
+     * @param page
+     * @param cid
+     */
+    @GET("project/list/{page}/json")
+    Observable<BaseBean<MainArticleBean>> getProjectList(@Path("page") int page, @Query("cid") int cid);
+
 }

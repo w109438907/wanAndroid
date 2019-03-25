@@ -17,6 +17,7 @@ import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
+import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.contract.KnowledgeContract;
 import com.yuan.learnproject.di.component.AppComponent;
 import com.yuan.learnproject.di.component.DaggerKnowledgeComponent;
@@ -95,7 +96,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
-                startDetailActivity(data.getLink());
+                startDetailActivity(data.getLink(), data.getId(), data.getTitle());
             }
         });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -128,10 +129,12 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         }, mRecyclerView);
     }
 
-    private void startDetailActivity(String url) {
+    private void startDetailActivity(String url, int id, String title) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("url", url);
+        bundle.putString(GlobalConstant.CONTENT_URL_KEY, url);
+        bundle.putInt(GlobalConstant.CONTENT_ID_KEY, id);
+        bundle.putString(GlobalConstant.CONTENT_TITLE_KEY, title);
         intent.putExtras(bundle);
         startActivity(intent);
     }

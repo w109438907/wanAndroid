@@ -5,6 +5,8 @@ import com.yuan.learnproject.bean.BaseBean;
 import com.yuan.learnproject.bean.NavigationBean;
 import com.yuan.learnproject.contract.NavigationContract;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ public class NavigationModel implements NavigationContract.NavigationModel {
     }
 
     @Override
-    public Observable<BaseBean<NavigationBean>> getNavigation() {
+    public Observable<BaseBean<List<NavigationBean>>> getNavigation() {
         return mApiService.getNavigation();
     }
 }

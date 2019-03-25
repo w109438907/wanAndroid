@@ -27,6 +27,7 @@ import com.yuan.learnproject.presenter.MainPresenter;
 import com.yuan.learnproject.ui.adapter.ViewPagerAdapter;
 import com.yuan.learnproject.ui.fragment.KnowledgeTreeFragment;
 import com.yuan.learnproject.ui.fragment.MainArticleFragment;
+import com.yuan.learnproject.ui.fragment.NavigationFragment;
 import com.yuan.learnproject.ui.widget.CustomScrollViewPager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -156,11 +157,11 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
     private List<FragmentInfoBean> initFragments() {
         List<FragmentInfoBean> mFragments = new ArrayList<>(4);
 
-        mFragments.add(new FragmentInfoBean("推荐", MainArticleFragment.class));
-        mFragments.add(new FragmentInfoBean("项目", KnowledgeTreeFragment.class));
+        mFragments.add(new FragmentInfoBean("MainArticle", MainArticleFragment.class));
+        mFragments.add(new FragmentInfoBean("KnowledgeTree", KnowledgeTreeFragment.class));
 
 
-        mFragments.add(new FragmentInfoBean("公众号", Fragment.class));
+        mFragments.add(new FragmentInfoBean("Navigation", NavigationFragment.class));
         mFragments.add(new FragmentInfoBean("知识体系", Fragment.class));
 
         return mFragments;

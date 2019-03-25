@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseActivity;
 import com.yuan.learnproject.base.BaseMvpActivity;
+import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.di.component.AppComponent;
 
 import androidx.annotation.Nullable;
@@ -99,7 +100,7 @@ public class DetailActivity extends BaseActivity {
     private String url;
 
     private void initData(Bundle bundle) {
-        url = bundle.getString("url");
+        url = bundle.getString(GlobalConstant.CONTENT_URL_KEY);
         mWebView.loadUrl(url);
     }
 

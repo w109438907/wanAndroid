@@ -24,6 +24,7 @@ import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.bean.articles.MainBannerBean;
+import com.yuan.learnproject.constant.GlobalConstant;
 import com.yuan.learnproject.contract.MainArticleContract;
 import com.yuan.learnproject.di.component.AppComponent;
 import com.yuan.learnproject.di.component.DaggerMainArticleComponent;
@@ -97,7 +98,7 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
-                startDetailActivity(data.getLink());
+                startDetailActivity(data.getLink(), data.getId(), data.getTitle());
             }
         });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -153,15 +154,16 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         mAdapter.loadMoreFail();
     }
 
-    private void startDetailActivity(String url) {
+    private void startDetailActivity(String url, int id, String title) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("url", url);
+        bundle.putString(GlobalConstant.CONTENT_URL_KEY, url);
+        bundle.putInt(GlobalConstant.CONTENT_ID_KEY, id);
+        bundle.putString(GlobalConstant.CONTENT_TITLE_KEY, title);
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    private MainArticleDataBean cacheData;
     @Override
     public void showResult(MainArticleBean mainArticleBean) {
         List<MainArticleDataBean> data = mainArticleBean.getDatas();
@@ -210,7 +212,10 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
                 Glide.with(context).load(path).into(imageView);
             }
         });
-        mBanner.setOnBannerListener(position -> startDetailActivity(mainBannerBean.get(position).getUrl()))
+        mBanner.setOnBannerListener(position -> {
+            MainBannerBean data = mainBannerBean.get(position);
+            startDetailActivity(data.getUrl(), data.getId(), data.getTitle());
+        })
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
                 .setDelayTime(5000)

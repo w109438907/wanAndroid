@@ -1,6 +1,5 @@
 package com.yuan.learnproject.presenter;
 
-import com.yuan.learnproject.base.BaseMvpPresenter;
 import com.yuan.learnproject.bean.BaseBean;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;

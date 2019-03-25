@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
     <q.rorbin.verticaltablayout.VerticalTabLayout
         android:layout_width="100dp"
+        android:id="@+id/tabLayout"
         android:layout_height="match_parent">
     </q.rorbin.verticaltablayout.VerticalTabLayout>
     <View

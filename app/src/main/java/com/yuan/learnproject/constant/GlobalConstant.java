@@ -13,5 +13,7 @@ public class GlobalConstant {
     public static final String KEY_COOKIE = "cookie";
     public static final String CONTENT_TITLE_KEY = "title";
     public static final String CONTENT_DATA_KEY = "content_data";
+    public static final String CONTENT_ID_KEY = "id";
+    public static final String CONTENT_URL_KEY = "url";
 
 }

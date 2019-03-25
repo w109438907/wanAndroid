@@ -6,6 +6,8 @@ import com.yuan.learnproject.contract.NavigationContract;
 import com.yuan.learnproject.rx.CommonSubscriber;
 import com.yuan.learnproject.rx.RxHttpResponseTransformer;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 /**
@@ -24,10 +26,10 @@ public class NavigationPresenter extends BaseMvpPresenter<NavigationContract.Nav
     public void getNavigation() {
         mModel.getNavigation()
                 .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<NavigationBean>(mView) {
+                .subscribe(new CommonSubscriber<List<NavigationBean>>(mView) {
                     @Override
-                    public void onNext(NavigationBean navigationBean) {
-                        mView.showNavigation(navigationBean);
+                    public void onNext(List<NavigationBean> navigationBeans) {
+                        mView.showNavigation(navigationBeans);
                     }
                 });
 
