@@ -1,12 +1,14 @@
 package com.yuan.learnproject.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -94,7 +96,16 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return false;
+                switch (item.getItemId()) {
+                    case R.id.collect:
+                        Intent intent = new Intent(MainActivity.this, DrawerActivity.class);
+                        intent.putExtra(GlobalConstant.KEY_TYPE_ID, R.id.collect);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
             }
         });
         headView = mNavigationView.getHeaderView(0);
@@ -127,7 +138,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
         //ViewPager and tab layout
         PagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), initFragments());
         mViewPager.setScrollable(false);
-        mViewPager.setOffscreenPageLimit(adapter.getCount());
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(adapter);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -191,7 +202,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
 
     @Override
     public void onError(String msg) {
-
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

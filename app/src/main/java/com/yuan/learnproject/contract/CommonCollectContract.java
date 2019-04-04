@@ -12,8 +12,8 @@ import io.reactivex.Observable;
 public interface CommonCollectContract extends BaseContract {
 
     interface CommonCollectView extends BaseView {
-        void collectArticleSuccess();
-        void cancelCollectArticleSuccess();
+        void collectArticleSuccess(int position);
+        void cancelCollectArticleSuccess(int position);
     }
 
     interface CommonCollectModel extends BaseModel {
@@ -22,7 +22,7 @@ public interface CommonCollectContract extends BaseContract {
     }
 
     interface CommonCollectPresenter extends BasePresenter {
-        void addCollect(int id);
-        void cancelCollect(int id);
+        void addCollect(int position, int id);
+        void cancelCollect(int position, int id);
     }
 }

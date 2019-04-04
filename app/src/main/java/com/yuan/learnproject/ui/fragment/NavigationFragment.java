@@ -1,5 +1,7 @@
 package com.yuan.learnproject.ui.fragment;
 
+import android.widget.Toast;
+
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.NavigationBean;
@@ -68,7 +70,7 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
 
     @Override
     public void onError(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

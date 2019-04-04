@@ -62,7 +62,7 @@ public class KnowledgeActivity extends BaseActivity {
 
     private void initTabLayout() {
         PagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), initFragments());
-        mViewPager.setOffscreenPageLimit(adapter.getCount());
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }

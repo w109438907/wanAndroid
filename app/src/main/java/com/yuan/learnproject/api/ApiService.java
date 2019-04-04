@@ -3,6 +3,7 @@ package com.yuan.learnproject.api;
 import com.yuan.learnproject.bean.BaseBean;
 import com.yuan.learnproject.bean.LoginResponseBean;
 import com.yuan.learnproject.bean.NavigationBean;
+import com.yuan.learnproject.bean.articles.CollectionArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.bean.articles.MainBannerBean;
@@ -24,7 +25,7 @@ import retrofit2.http.Query;
  * @date 2019/1/27
  **/
 public interface ApiService {
-    String BASE_URL = "http://www.wanandroid.com";
+    String BASE_URL = "https://www.wanandroid.com";
 
     /**
      * 获取文章列表
@@ -81,6 +82,15 @@ public interface ApiService {
      */
     @GET("user/logout/json")
     Observable<BaseBean<Object>> logout();
+
+    /**
+     * 获取收藏文章列表
+     * http://www.wanandroid.com/article/list/0/json
+     *
+     * @param pageIndex
+     */
+    @GET("lg/collect/list/{pageIndex}/json")
+    Observable<BaseBean<CollectionArticleBean>> getCollectedArticles(@Path("pageIndex") int pageIndex);
 
     /**
      * 收藏站内文章

@@ -16,4 +16,6 @@ public class GlobalConstant {
     public static final String CONTENT_ID_KEY = "id";
     public static final String CONTENT_URL_KEY = "url";
 
+    public static final String KEY_TYPE_ID = "type_id";
+
 }

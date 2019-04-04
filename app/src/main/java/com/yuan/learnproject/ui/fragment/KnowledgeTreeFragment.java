@@ -2,6 +2,7 @@ package com.yuan.learnproject.ui.fragment;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -66,7 +67,7 @@ public class KnowledgeTreeFragment extends BaseFragment<KnowledgeTreePresenter> 
 
     @Override
     public void onError(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     private void initRefreshLayout() {

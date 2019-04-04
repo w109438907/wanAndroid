@@ -21,7 +21,7 @@ public abstract class CommonCollectPresenter<M extends CommonCollectContract.Com
     }
 
     @Override
-    public void addCollect(int id) {
+    public void addCollect(int position, int id) {
         mModel.collectArticle(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -29,7 +29,7 @@ public abstract class CommonCollectPresenter<M extends CommonCollectContract.Com
                     @Override
                     public void onNext(BaseBean<Object> objectBaseBean) {
                         if (objectBaseBean.getErrorCode() == 0) {
-                            mView.collectArticleSuccess();
+                            mView.collectArticleSuccess(position);
                         } else {
                             mView.onError(objectBaseBean.getErrorMsg());
                         }
@@ -38,7 +38,7 @@ public abstract class CommonCollectPresenter<M extends CommonCollectContract.Com
     }
 
     @Override
-    public void cancelCollect(int id) {
+    public void cancelCollect(int position, int id) {
         mModel.cancelCollectArticle(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -46,7 +46,7 @@ public abstract class CommonCollectPresenter<M extends CommonCollectContract.Com
                     @Override
                     public void onNext(BaseBean<Object> objectBaseBean) {
                         if (objectBaseBean.getErrorCode() == 0) {
-                            mView.cancelCollectArticleSuccess();
+                            mView.cancelCollectArticleSuccess(position);
                         } else {
                             mView.onError(objectBaseBean.getErrorMsg());
                         }

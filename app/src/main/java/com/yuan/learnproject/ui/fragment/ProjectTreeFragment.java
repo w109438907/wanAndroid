@@ -1,8 +1,10 @@
 package com.yuan.learnproject.ui.fragment;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.FragmentInfoBean;
@@ -54,7 +56,7 @@ public class ProjectTreeFragment extends BaseFragment<ProjectTreePresenter> impl
 
     private void initTabLayout(List<ProjectTreeBean> projectTreeBeanList) {
         PagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager(), initFragments(projectTreeBeanList));
-        mViewPager.setOffscreenPageLimit(adapter.getCount());
+        mViewPager.setOffscreenPageLimit(1);
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
@@ -74,7 +76,7 @@ public class ProjectTreeFragment extends BaseFragment<ProjectTreePresenter> impl
 
     @Override
     public void onError(String msg) {
-
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

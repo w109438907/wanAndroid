@@ -108,12 +108,10 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
                     if (MainActivity.hasLogin) {
                         MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
                         if (data.isCollect()){
-                            mPresenter.cancelCollect(data.getId());
+                            mPresenter.cancelCollect(position, data.getId());
                         }else {
-                            mPresenter.addCollect(data.getId());
+                            mPresenter.addCollect(position, data.getId());
                         }
-                        data.setCollect(!data.isCollect());
-                        mAdapter.setData(position, data);
                     }else {
                         Toast.makeText(getActivity(), "please login first", Toast.LENGTH_SHORT).show();
                     }
@@ -228,15 +226,22 @@ public class MainArticleFragment extends BaseFragment<MainArticlePresenter> impl
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(false);
         }
+        mAdapter.loadMoreFail();
     }
 
     @Override
-    public void collectArticleSuccess() {
+    public void collectArticleSuccess(int position) {
         Toast.makeText(getActivity(), "collect success!", Toast.LENGTH_SHORT).show();
+        MainArticleDataBean data = mAdapter.getData().get(position);
+        data.setCollect(true);
+        mAdapter.setData(position, data);
     }
 
     @Override
-    public void cancelCollectArticleSuccess() {
+    public void cancelCollectArticleSuccess(int position) {
         Toast.makeText(getActivity(), "cancel collect success!", Toast.LENGTH_SHORT).show();
+        MainArticleDataBean data = mAdapter.getData().get(position);
+        data.setCollect(false);
+        mAdapter.setData(position, data);
     }
 }

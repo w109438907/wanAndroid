@@ -13,19 +13,21 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.youth.banner.Banner;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
-import com.yuan.learnproject.bean.articles.MainArticleBean;
-import com.yuan.learnproject.bean.articles.MainArticleDataBean;
+import com.yuan.learnproject.bean.articles.CollectionArticleBean;
+import com.yuan.learnproject.bean.articles.CollectionArticleDataBean;
 import com.yuan.learnproject.constant.GlobalConstant;
-import com.yuan.learnproject.contract.KnowledgeContract;
+import com.yuan.learnproject.contract.CollectContract;
 import com.yuan.learnproject.di.component.AppComponent;
-import com.yuan.learnproject.di.component.DaggerKnowledgeComponent;
-import com.yuan.learnproject.di.module.KnowledgeModule;
-import com.yuan.learnproject.presenter.KnowledgePresenter;
+import com.yuan.learnproject.di.component.DaggerCollectComponent;
+import com.yuan.learnproject.di.module.CollectModule;
+import com.yuan.learnproject.presenter.CollectPresenter;
 import com.yuan.learnproject.ui.activity.DetailActivity;
 import com.yuan.learnproject.ui.activity.MainActivity;
-import com.yuan.learnproject.ui.adapter.KnowledgeQuickAdapter;
+import com.yuan.learnproject.ui.adapter.ArticleQuickAdapter;
+import com.yuan.learnproject.ui.adapter.CollectionQuickAdapter;
 
 import java.util.List;
 
@@ -38,34 +40,19 @@ import butterknife.BindView;
 
 /**
  * @author yuan
- * @date 2019/3/16
+ * @date 2019/4/3
  **/
-public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.KnowledgeView {
-    private final static String TAG = MainArticleFragment.class.getCanonicalName();
+public class CollectFragment extends BaseFragment<CollectPresenter> implements CollectContract.CollectView {
+    private final static String TAG = CollectFragment.class.getCanonicalName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.smart_refresh)
     SmartRefreshLayout mSmartRefresh;
-
-    private int cid = 0;
-    private int currentPageIndex = 0;
-    private KnowledgeQuickAdapter mAdapter;
-    private MainArticleDataBean cacheData;
+    
+    private CollectionQuickAdapter mAdapter;
     private boolean isRefresh = false;
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent) {
-        DaggerKnowledgeComponent.builder()
-                .appComponent(appComponent)
-                .knowledgeModule(new KnowledgeModule(this))
-                .build()
-                .inject(this);
-    }
-
-    public void setCid(int cid) {
-        this.cid = cid;
-    }
+    private int currentPageIndex = 0;
 
     @Override
     protected int getLayout() {
@@ -76,26 +63,21 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     protected void init() {
         initRefreshLayout();
         initRecycleView();
-        mPresenter.getKnowledgeList(currentPageIndex, cid);
+        mPresenter.getCollectArticles(0);
     }
 
     private void initRecycleView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()) {
-            @Override
-            public boolean canScrollVertically() {
-                return true;
-            }
-        });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mAdapter = new KnowledgeQuickAdapter(getActivity());
+        mAdapter = new CollectionQuickAdapter(getActivity());
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.disableLoadMoreIfNotFullPage();
         mAdapter.setPreLoadNumber(5);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
+                CollectionArticleDataBean data = (CollectionArticleDataBean) adapter.getData().get(position);
                 startDetailActivity(data.getLink(), data.getId(), data.getTitle());
             }
         });
@@ -104,15 +86,9 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (view.getId() == R.id.collection) {
                     if (MainActivity.hasLogin) {
-                        MainArticleDataBean data = (MainArticleDataBean) adapter.getData().get(position);
-                        if (data.isCollect()){
-                            mPresenter.cancelCollect(position, data.getId());
-                        }else {
-                            mPresenter.addCollect(position, data.getId());
-                        }
-                        data.setCollect(!data.isCollect());
-                        mAdapter.setData(position, data);
-                    }else {
+                        CollectionArticleDataBean data = (CollectionArticleDataBean) adapter.getData().get(position);
+                            mPresenter.deleteCollectArticle(position, data.getId(), data.getOriginId());
+                    } else {
                         Toast.makeText(getActivity(), "please login first", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -121,10 +97,10 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                Log.e(TAG, "onLoadMoreRequested: "  + currentPageIndex);
+                Log.e(TAG, "onLoadMoreRequested: " + currentPageIndex);
                 currentPageIndex++;
                 isRefresh = false;
-                mPresenter.getKnowledgeList(currentPageIndex, cid);
+                mPresenter.getCollectArticles(currentPageIndex);
             }
         }, mRecyclerView);
     }
@@ -146,23 +122,24 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 isRefresh = true;
-                mPresenter.getKnowledgeList(0, cid);
+                mPresenter.getCollectArticles(0);
             }
         });
         mSmartRefresh.setEnableLoadMore(false);
     }
 
     @Override
-    public void onError(String msg) {
-        if (mSmartRefresh.getState() == RefreshState.Refreshing) {
-            mSmartRefresh.finishRefresh(false);
-        }
-        mAdapter.loadMoreFail();
+    public void setupActivityComponent(AppComponent appComponent) {
+        DaggerCollectComponent.builder()
+                .appComponent(appComponent)
+                .collectModule(new CollectModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
-    public void showResult(MainArticleBean mainArticleBean) {
-        List<MainArticleDataBean> data = mainArticleBean.getDatas();
+    public void showCollect(CollectionArticleBean collectionArticleBean) {
+        List<CollectionArticleDataBean> data = collectionArticleBean.getDatas();
         if (data == null) {
             if (mSmartRefresh.getState() == RefreshState.Loading) {
                 mSmartRefresh.finishLoadMore(false);
@@ -175,7 +152,6 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
-        Log.e(TAG, isRefresh + ", showResult: " + mainArticleBean.toString());
         if (isRefresh) {
             isRefresh = false;
             mAdapter.replaceData(data);
@@ -183,7 +159,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             mAdapter.addData(data);
         }
         int size = data.size();
-        if (size < mainArticleBean.getSize()) {
+        if (size < collectionArticleBean.getSize()) {
             mAdapter.loadMoreEnd();
         }else {
             mAdapter.loadMoreComplete();
@@ -191,18 +167,16 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     }
 
     @Override
-    public void collectArticleSuccess(int position) {
-        Toast.makeText(getActivity(), "collect success!", Toast.LENGTH_SHORT).show();
-        MainArticleDataBean data = mAdapter.getData().get(position);
-        data.setCollect(true);
-        mAdapter.setData(position, data);
+    public void onError(String msg) {
+        if (mSmartRefresh.getState() == RefreshState.Refreshing) {
+            mSmartRefresh.finishRefresh(false);
+        }
+        mAdapter.loadMoreFail();
     }
 
     @Override
-    public void cancelCollectArticleSuccess(int position) {
+    public void onDeleteCollectionSuccess(int position) {
         Toast.makeText(getActivity(), "cancel collect success!", Toast.LENGTH_SHORT).show();
-        MainArticleDataBean data = mAdapter.getData().get(position);
-        data.setCollect(false);
-        mAdapter.setData(position, data);
+        mAdapter.remove(position);
     }
 }

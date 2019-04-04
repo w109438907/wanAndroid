@@ -32,6 +32,8 @@
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.KnowledgeActivity"
             android:theme="@style/AppTheme.Notitle.FullScreen"/>
+        <activity android:name=".ui.activity.DrawerActivity"
+            android:theme="@style/AppTheme.Notitle.FullScreen"/>
     </application>
 
 </manifest>
