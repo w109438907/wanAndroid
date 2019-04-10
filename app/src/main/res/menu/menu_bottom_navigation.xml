@@ -21,4 +21,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_project_page"
         android:title="@string/project_page" />
+
+    <item
+        android:id="@+id/action_wechat_public"
+        android:enabled="true"
+        android:icon="@drawable/ic_wechat_public"
+        android:title="@string/wechat_public"/>
 </menu>

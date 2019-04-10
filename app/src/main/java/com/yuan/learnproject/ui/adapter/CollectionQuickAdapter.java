@@ -2,6 +2,7 @@ package com.yuan.learnproject.ui.adapter;
 
 import android.content.Context;
 import android.text.Html;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,10 @@ public class CollectionQuickAdapter extends BaseQuickAdapter<CollectionArticleDa
                 .setText(R.id.description, item.getDesc());
         helper.setImageResource(R.id.collection, R.drawable.ic_have_favorited);
         helper.addOnClickListener(R.id.collection);
-        Glide.with(mContext).load(item.getEnvelopePic()).into((ImageView) helper.getView(R.id.imageView));
+        if (item.getEnvelopePic() != null && !"".equals(item.getEnvelopePic())) {
+            Glide.with(mContext).load(item.getEnvelopePic()).into((ImageView) helper.getView(R.id.imageView));
+        }else {
+            helper.setGone(R.id.imageView, false);
+        }
     }
 }

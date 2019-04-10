@@ -18,14 +18,14 @@ import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.constant.GlobalConstant;
-import com.yuan.learnproject.contract.KnowledgeContract;
+import com.yuan.learnproject.contract.WeChatContract;
 import com.yuan.learnproject.di.component.AppComponent;
-import com.yuan.learnproject.di.component.DaggerKnowledgeComponent;
-import com.yuan.learnproject.di.module.KnowledgeModule;
-import com.yuan.learnproject.presenter.KnowledgePresenter;
+import com.yuan.learnproject.di.component.DaggerWeChatComponent;
+import com.yuan.learnproject.di.module.WeChatModule;
+import com.yuan.learnproject.presenter.WeChatPresenter;
 import com.yuan.learnproject.ui.activity.DetailActivity;
 import com.yuan.learnproject.ui.activity.MainActivity;
-import com.yuan.learnproject.ui.adapter.KnowledgeQuickAdapter;
+import com.yuan.learnproject.ui.adapter.WeChatQuickAdapter;
 
 import java.util.List;
 
@@ -38,33 +38,29 @@ import butterknife.BindView;
 
 /**
  * @author yuan
- * @date 2019/3/16
+ * @date 2019/4/9
  **/
-public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.KnowledgeView {
-    private final static String TAG = KnowledgeFragment.class.getCanonicalName();
+public class WeChatFragment extends BaseFragment<WeChatPresenter> implements WeChatContract.WeChatView {
+    private final static String TAG = WeChatFragment.class.getCanonicalName();
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.smart_refresh)
     SmartRefreshLayout mSmartRefresh;
 
-    private int cid = 0;
-    private int currentPageIndex = 0;
-    private KnowledgeQuickAdapter mAdapter;
-    private MainArticleDataBean cacheData;
+    private int id = 0;
     private boolean isRefresh = false;
+    private final int START_PAGE_INDEX = 1;
+    private int currentPageIndex = START_PAGE_INDEX;
+    private WeChatQuickAdapter mAdapter;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
-        DaggerKnowledgeComponent.builder()
+        DaggerWeChatComponent.builder()
                 .appComponent(appComponent)
-                .knowledgeModule(new KnowledgeModule(this))
+                .weChatModule(new WeChatModule(this))
                 .build()
                 .inject(this);
-    }
-
-    public void setCid(int cid) {
-        this.cid = cid;
     }
 
     @Override
@@ -76,19 +72,27 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     protected void init() {
         initRefreshLayout();
         initRecycleView();
-        mPresenter.getKnowledgeList(currentPageIndex, cid);
+        mPresenter.getWeChatArticles(id, START_PAGE_INDEX);
     }
 
     private void initRecycleView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()) {
+        mSmartRefresh.setRefreshHeader(new ClassicsHeader(getActivity()));
+        mSmartRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
+        mSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public boolean canScrollVertically() {
-                return true;
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                isRefresh = true;
+                mPresenter.getWeChatArticles(id, START_PAGE_INDEX);
             }
         });
+        mSmartRefresh.setEnableLoadMore(false);
+    }
+
+    private void initRefreshLayout() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mAdapter = new KnowledgeQuickAdapter(getActivity());
+        mAdapter = new WeChatQuickAdapter(getActivity());
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.disableLoadMoreIfNotFullPage();
         mAdapter.setPreLoadNumber(5);
@@ -124,32 +128,25 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
                 Log.e(TAG, "onLoadMoreRequested: "  + currentPageIndex);
                 currentPageIndex++;
                 isRefresh = false;
-                mPresenter.getKnowledgeList(currentPageIndex, cid);
+                mPresenter.getWeChatArticles(id, currentPageIndex);
             }
         }, mRecyclerView);
     }
 
-    private void startDetailActivity(String url, int id, String title) {
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(GlobalConstant.CONTENT_URL_KEY, url);
-        bundle.putInt(GlobalConstant.CONTENT_ID_KEY, id);
-        bundle.putString(GlobalConstant.CONTENT_TITLE_KEY, title);
-        intent.putExtras(bundle);
-        startActivity(intent);
+    @Override
+    public void collectArticleSuccess(int position) {
+        Toast.makeText(getActivity(), "collect success!", Toast.LENGTH_SHORT).show();
+        MainArticleDataBean data = mAdapter.getData().get(position);
+        data.setCollect(true);
+        mAdapter.setData(position, data);
     }
 
-    private void initRefreshLayout() {
-        mSmartRefresh.setRefreshHeader(new ClassicsHeader(getActivity()));
-        mSmartRefresh.setRefreshFooter(new ClassicsFooter(getActivity()));
-        mSmartRefresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                isRefresh = true;
-                mPresenter.getKnowledgeList(0, cid);
-            }
-        });
-        mSmartRefresh.setEnableLoadMore(false);
+    @Override
+    public void cancelCollectArticleSuccess(int position) {
+        Toast.makeText(getActivity(), "cancel collect success!", Toast.LENGTH_SHORT).show();
+        MainArticleDataBean data = mAdapter.getData().get(position);
+        data.setCollect(false);
+        mAdapter.setData(position, data);
     }
 
     @Override
@@ -158,6 +155,10 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             mSmartRefresh.finishRefresh(false);
         }
         mAdapter.loadMoreFail();
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -175,7 +176,6 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         if (mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
-        Log.e(TAG, isRefresh + ", showResult: " + mainArticleBean.toString());
         if (isRefresh) {
             isRefresh = false;
             mAdapter.replaceData(data);
@@ -190,19 +190,13 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         }
     }
 
-    @Override
-    public void collectArticleSuccess(int position) {
-        Toast.makeText(getActivity(), "collect success!", Toast.LENGTH_SHORT).show();
-        MainArticleDataBean data = mAdapter.getData().get(position);
-        data.setCollect(true);
-        mAdapter.setData(position, data);
-    }
-
-    @Override
-    public void cancelCollectArticleSuccess(int position) {
-        Toast.makeText(getActivity(), "cancel collect success!", Toast.LENGTH_SHORT).show();
-        MainArticleDataBean data = mAdapter.getData().get(position);
-        data.setCollect(false);
-        mAdapter.setData(position, data);
+    private void startDetailActivity(String url, int id, String title) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(GlobalConstant.CONTENT_URL_KEY, url);
+        bundle.putInt(GlobalConstant.CONTENT_ID_KEY, id);
+        bundle.putString(GlobalConstant.CONTENT_TITLE_KEY, title);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

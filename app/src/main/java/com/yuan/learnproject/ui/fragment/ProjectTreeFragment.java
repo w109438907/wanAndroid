@@ -4,7 +4,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
-import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.yuan.learnproject.R;
 import com.yuan.learnproject.base.BaseFragment;
 import com.yuan.learnproject.bean.FragmentInfoBean;
@@ -81,7 +80,6 @@ public class ProjectTreeFragment extends BaseFragment<ProjectTreePresenter> impl
 
     @Override
     public void showProjectTree(List<ProjectTreeBean> projectTreeBeanList) {
-        Log.e(TAG, "showProjectTree: " + projectTreeBeanList.toString() );
         initTabLayout(projectTreeBeanList);
     }
 }

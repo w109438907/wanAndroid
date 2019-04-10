@@ -9,6 +9,7 @@ import com.yuan.learnproject.bean.articles.MainArticleDataBean;
 import com.yuan.learnproject.bean.articles.MainBannerBean;
 import com.yuan.learnproject.bean.knowledge.TreesBean;
 import com.yuan.learnproject.bean.project.ProjectTreeBean;
+import com.yuan.learnproject.bean.wechat.WeChatChapterBean;
 
 import java.util.List;
 
@@ -95,6 +96,7 @@ public interface ApiService {
     /**
      * 收藏站内文章
      * http://www.wanandroid.com/lg/collect/1165/json
+     *
      * @param articleId
      */
     @POST("lg/collect/{articleId}/json")
@@ -103,6 +105,7 @@ public interface ApiService {
     /**
      * 文章列表中取消收藏文章
      * http://www.wanandroid.com/lg/uncollect_originId/2333/json
+     *
      * @param articleId
      */
     @POST("lg/uncollect_originId/{articleId}/json")
@@ -111,15 +114,18 @@ public interface ApiService {
     /**
      * 收藏列表中取消收藏文章
      * http://www.wanandroid.com/lg/uncollect/2805/json
+     *
      * @param articleId
      * @param originId
      */
     @POST("lg/uncollect/{articleId}/json")
     Observable<BaseBean<Object>> deleteCollectArticle(@Path("articleId") int articleId,
                                                       @Field("originId") int originId);
+
     /**
      * 收藏站外文章
      * http://www.wanandroid.com/lg/collect/add/json
+     *
      * @param title
      * @param author
      * @param link
@@ -164,10 +170,40 @@ public interface ApiService {
     /**
      * 项目列表数据
      * http://www.wanandroid.com/project/list/1/json?cid=294
+     *
      * @param page
      * @param cid
      */
     @GET("project/list/{page}/json")
     Observable<BaseBean<MainArticleBean>> getProjectList(@Path("page") int page, @Query("cid") int cid);
+
+
+    /**
+     * 获取公众号列表
+     * http://wanandroid.com/wxarticle/chapters/json
+     */
+    @GET("/wxarticle/chapters/json")
+    Observable<BaseBean<List<WeChatChapterBean>>> getWeChatChapters();
+
+    /**
+     * 查看某个公众号历史数据
+     * http://wanandroid.com/wxarticle/list/405/1/json
+     *
+     * @param id   公众号 id
+     * @param page 公众号页码
+     */
+    @GET("/wxarticle/list/{id}/{page}/json")
+    Observable<BaseBean<MainArticleBean>> getWeChatArticles(@Path("id") int id, @Path("page") int page);
+
+    /**
+     * 在某个公众号中搜索历史文章
+     * http://wanandroid.com/wxarticle/list/405/1/json?k=Java
+     *
+     * @param id   公众号 id
+     * @param key  搜索关键字
+     * @param page 公众号页码
+     */
+    @GET("/wxarticle/list/{id}/{page}/json")
+    Observable<BaseBean<MainArticleBean>> queryWeChatArticles(@Path("id") int id, @Query("k") String key, @Path("page") int page);
 
 }

@@ -1,7 +1,6 @@
 package com.yuan.learnproject.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,7 @@ import com.yuan.learnproject.ui.fragment.KnowledgeTreeFragment;
 import com.yuan.learnproject.ui.fragment.MainArticleFragment;
 import com.yuan.learnproject.ui.fragment.NavigationFragment;
 import com.yuan.learnproject.ui.fragment.ProjectTreeFragment;
+import com.yuan.learnproject.ui.fragment.WeChatTreeFragment;
 import com.yuan.learnproject.ui.widget.CustomScrollViewPager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -145,19 +145,21 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_home_page:
-                        mViewPager.setCurrentItem(0);
+                        mViewPager.setCurrentItem(0, false);
                         break;
                     case R.id.action_knowledge_system:
-                        mViewPager.setCurrentItem(1);
+                        mViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.action_navigation_page:
-                        mViewPager.setCurrentItem(2);
+                        mViewPager.setCurrentItem(2, false);
                         break;
                     case R.id.action_project_page:
-                        mViewPager.setCurrentItem(3);
+                        mViewPager.setCurrentItem(3, false);
+                        break;
+                    case R.id.action_wechat_public:
+                        mViewPager.setCurrentItem(4, false);
                         break;
                     default:
-                        mViewPager.setCurrentItem(0);
                         break;
                 }
                 return true;
@@ -174,7 +176,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
 
         mFragments.add(new FragmentInfoBean("Navigation", NavigationFragment.class));
         mFragments.add(new FragmentInfoBean("Project", ProjectTreeFragment.class));
-
+        mFragments.add(new FragmentInfoBean("Wechat", WeChatTreeFragment.class));
         return mFragments;
     }
 

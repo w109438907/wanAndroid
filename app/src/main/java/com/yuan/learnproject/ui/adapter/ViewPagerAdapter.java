@@ -3,6 +3,7 @@ package com.yuan.learnproject.ui.adapter;
 import com.yuan.learnproject.bean.FragmentInfoBean;
 import com.yuan.learnproject.ui.fragment.KnowledgeFragment;
 import com.yuan.learnproject.ui.fragment.ProjectFragment;
+import com.yuan.learnproject.ui.fragment.WeChatFragment;
 
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 ((KnowledgeFragment)fragment).setCid(mFragments.get(position).getId());
             }else if (fragment instanceof ProjectFragment) {
                 ((ProjectFragment)fragment).setCid(mFragments.get(position).getId());
+            }else if (fragment instanceof WeChatFragment) {
+                ((WeChatFragment)fragment).setId(mFragments.get(position).getId());
             }
             return fragment;
 

@@ -26,4 +26,5 @@
     <string name="go_to_login">Already a member? Login</string>
     <string name="create_account">Create Account</string>
     <string name="mismatch_password">password mismatch</string>
+    <string name="wechat_public">wechat</string>
 </resources>
