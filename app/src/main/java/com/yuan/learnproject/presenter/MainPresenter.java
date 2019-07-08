@@ -24,19 +24,21 @@ public class MainPresenter extends BaseMvpPresenter<MainContract.MainModel, Main
 
     @Override
     public void requestPermission() {
-        PermissionUtils.permission(permissions)
-                .callback(
-                new PermissionUtils.FullCallback() {
-                    @Override
-                    public void onGranted(List<String> permissionsGranted) {
-                        mView.requestPermissionSuccess();
-                    }
+        if (isViewAttached()) {
+            PermissionUtils.permission(permissions)
+                    .callback(
+                            new PermissionUtils.FullCallback() {
+                                @Override
+                                public void onGranted(List<String> permissionsGranted) {
+                                    mView.requestPermissionSuccess();
+                                }
 
-                    @Override
-                    public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
-                        mView.requestPermissionFail();
-                    }
-                }
-        ).request();
+                                @Override
+                                public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
+                                    mView.requestPermissionFail();
+                                }
+                            }
+                    ).request();
+        }
     }
 }

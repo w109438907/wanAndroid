@@ -21,13 +21,15 @@ public class WeChatPresenter extends CommonCollectPresenter<WeChatContract.WeCha
 
     @Override
     public void getWeChatArticles(int id, int page) {
-        mModel.getWeChatArticles(id, page)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
-                    @Override
-                    public void onNext(MainArticleBean mainArticleBean) {
-                        mView.showResult(mainArticleBean);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getWeChatArticles(id, page)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
+                        @Override
+                        public void onNext(MainArticleBean mainArticleBean) {
+                            mView.showResult(mainArticleBean);
+                        }
+                    });
+        }
     }
 }

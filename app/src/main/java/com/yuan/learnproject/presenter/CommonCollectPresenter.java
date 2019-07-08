@@ -22,35 +22,39 @@ public abstract class CommonCollectPresenter<M extends CommonCollectContract.Com
 
     @Override
     public void addCollect(int position, int id) {
-        mModel.collectArticle(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
-                    @Override
-                    public void onNext(BaseBean<Object> objectBaseBean) {
-                        if (objectBaseBean.getErrorCode() == 0) {
-                            mView.collectArticleSuccess(position);
-                        } else {
-                            mView.onError(objectBaseBean.getErrorMsg());
+        if (isViewAttached()) {
+            mModel.collectArticle(id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
+                        @Override
+                        public void onNext(BaseBean<Object> objectBaseBean) {
+                            if (objectBaseBean.getErrorCode() == 0) {
+                                mView.collectArticleSuccess(position);
+                            } else {
+                                mView.onError(objectBaseBean.getErrorMsg());
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
     public void cancelCollect(int position, int id) {
-        mModel.cancelCollectArticle(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
-                    @Override
-                    public void onNext(BaseBean<Object> objectBaseBean) {
-                        if (objectBaseBean.getErrorCode() == 0) {
-                            mView.cancelCollectArticleSuccess(position);
-                        } else {
-                            mView.onError(objectBaseBean.getErrorMsg());
+        if (isViewAttached()) {
+            mModel.cancelCollectArticle(id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
+                        @Override
+                        public void onNext(BaseBean<Object> objectBaseBean) {
+                            if (objectBaseBean.getErrorCode() == 0) {
+                                mView.cancelCollectArticleSuccess(position);
+                            } else {
+                                mView.onError(objectBaseBean.getErrorMsg());
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 }

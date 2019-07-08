@@ -23,25 +23,27 @@ public class LoginPresenter extends BaseMvpPresenter<LoginContract.LoginModel, L
 
     @Override
     public void doLogin(String username, String password) {
-        mModel.doLogin(username, password)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<LoginResponseBean>(mView) {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        super.onSubscribe(d);
-                        mView.showProgress(true);
-                    }
+        if (isViewAttached()) {
+            mModel.doLogin(username, password)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<LoginResponseBean>(mView) {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            super.onSubscribe(d);
+                            mView.showProgress(true);
+                        }
 
-                    @Override
-                    public void onNext(LoginResponseBean loginResponseBean) {
-                        mView.onLoginSuccess(loginResponseBean);
-                    }
+                        @Override
+                        public void onNext(LoginResponseBean loginResponseBean) {
+                            mView.onLoginSuccess(loginResponseBean);
+                        }
 
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
-                        mView.showProgress(false);
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+                            super.onComplete();
+                            mView.showProgress(false);
+                        }
+                    });
+        }
     }
 }

@@ -24,14 +24,15 @@ public class NavigationPresenter extends BaseMvpPresenter<NavigationContract.Nav
 
     @Override
     public void getNavigation() {
-        mModel.getNavigation()
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<List<NavigationBean>>(mView) {
-                    @Override
-                    public void onNext(List<NavigationBean> navigationBeans) {
-                        mView.showNavigation(navigationBeans);
-                    }
-                });
-
+        if (isViewAttached()) {
+            mModel.getNavigation()
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<List<NavigationBean>>(mView) {
+                        @Override
+                        public void onNext(List<NavigationBean> navigationBeans) {
+                            mView.showNavigation(navigationBeans);
+                        }
+                    });
+        }
     }
 }

@@ -26,53 +26,58 @@ public class MainArticlePresenter extends CommonCollectPresenter
 
     @Override
     public void requestData(int page) {
-        mModel.getMainArticle(page)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
-                    @Override
-                    public void onNext(MainArticleBean mainArticleBean) {
-                        mView.showResult(mainArticleBean);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getMainArticle(page)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
+                        @Override
+                        public void onNext(MainArticleBean mainArticleBean) {
+                            mView.showResult(mainArticleBean);
+                        }
+                    });
+        }
     }
 
     @Override
     public void requestBanner() {
-        mModel.getBanner()
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<List<MainBannerBean>>(mView) {
-                    @Override
-                    public void onNext(List<MainBannerBean> mainBannerBeans) {
-                        mView.showBanner(mainBannerBeans);
-                    }
+        if (isViewAttached()) {
+            mModel.getBanner()
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<List<MainBannerBean>>(mView) {
+                        @Override
+                        public void onNext(List<MainBannerBean> mainBannerBeans) {
+                            mView.showBanner(mainBannerBeans);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.getBannerError();
-                    }
-                });
-
+                        @Override
+                        public void onError(Throwable e) {
+                            mView.getBannerError();
+                        }
+                    });
+        }
     }
 
     @Override
     public void requestHomeData() {
-        Observable.zip(mModel.getTopArticles(), mModel.getMainArticle(0),
-                new BiFunction<BaseBean<List<MainArticleDataBean>>, BaseBean<MainArticleBean>, BaseBean<MainArticleBean>>() {
-                    @Override
-                    public BaseBean<MainArticleBean> apply(BaseBean<List<MainArticleDataBean>> listBaseBean, BaseBean<MainArticleBean> mainArticleBeanBaseBean) throws Exception {
-                        for (MainArticleDataBean data : listBaseBean.getData()) {
-                            data.setTop(1);
+        if (isViewAttached()) {
+            Observable.zip(mModel.getTopArticles(), mModel.getMainArticle(0),
+                    new BiFunction<BaseBean<List<MainArticleDataBean>>, BaseBean<MainArticleBean>, BaseBean<MainArticleBean>>() {
+                        @Override
+                        public BaseBean<MainArticleBean> apply(BaseBean<List<MainArticleDataBean>> listBaseBean, BaseBean<MainArticleBean> mainArticleBeanBaseBean) throws Exception {
+                            for (MainArticleDataBean data : listBaseBean.getData()) {
+                                data.setTop(1);
+                            }
+                            mainArticleBeanBaseBean.getData().getDatas().addAll(0, listBaseBean.getData());
+                            return mainArticleBeanBaseBean;
                         }
-                        mainArticleBeanBaseBean.getData().getDatas().addAll(0, listBaseBean.getData());
-                        return mainArticleBeanBaseBean;
-                    }
-                })
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
-                    @Override
-                    public void onNext(MainArticleBean mainArticleBean) {
-                        mView.showResult(mainArticleBean);
-                    }
-                });
+                    })
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
+                        @Override
+                        public void onNext(MainArticleBean mainArticleBean) {
+                            mView.showResult(mainArticleBean);
+                        }
+                    });
+        }
     }
 }

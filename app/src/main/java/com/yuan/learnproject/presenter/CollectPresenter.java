@@ -26,30 +26,34 @@ public class CollectPresenter extends BaseMvpPresenter<CollectContract.CollectMo
 
     @Override
     public void getCollectArticles(int pageIndex) {
-        mModel.getCollectArticles(pageIndex)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<CollectionArticleBean>(mView) {
-                    @Override
-                    public void onNext(CollectionArticleBean collectionArticleBeans) {
-                        mView.showCollect(collectionArticleBeans);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getCollectArticles(pageIndex)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<CollectionArticleBean>(mView) {
+                        @Override
+                        public void onNext(CollectionArticleBean collectionArticleBeans) {
+                            mView.showCollect(collectionArticleBeans);
+                        }
+                    });
+        }
     }
 
     @Override
     public void deleteCollectArticle(int position, int articleId, int originId) {
-        mModel.deleteCollectArticle(articleId, originId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
-                    @Override
-                    public void onNext(BaseBean<Object> objectBaseBean) {
-                        if (objectBaseBean.getErrorCode() == 0) {
-                            mView.onDeleteCollectionSuccess(position);
-                        } else {
-                            mView.onError(objectBaseBean.getErrorMsg());
+        if (isViewAttached()) {
+            mModel.deleteCollectArticle(articleId, originId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new CommonSubscriber<BaseBean<Object>>(mView) {
+                        @Override
+                        public void onNext(BaseBean<Object> objectBaseBean) {
+                            if (objectBaseBean.getErrorCode() == 0) {
+                                mView.onDeleteCollectionSuccess(position);
+                            } else {
+                                mView.onError(objectBaseBean.getErrorMsg());
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 }

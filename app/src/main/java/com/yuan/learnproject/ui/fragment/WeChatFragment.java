@@ -165,6 +165,9 @@ public class WeChatFragment extends BaseFragment<WeChatPresenter> implements WeC
     public void showResult(MainArticleBean mainArticleBean) {
         List<MainArticleDataBean> data = mainArticleBean.getDatas();
         if (data == null) {
+            if (mSmartRefresh == null) {
+                return;
+            }
             if (mSmartRefresh.getState() == RefreshState.Loading) {
                 mSmartRefresh.finishLoadMore(false);
             }
@@ -173,7 +176,7 @@ public class WeChatFragment extends BaseFragment<WeChatPresenter> implements WeC
             }
             return;
         }
-        if (mSmartRefresh.getState() == RefreshState.Refreshing) {
+        if (mSmartRefresh != null && mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
         if (isRefresh) {

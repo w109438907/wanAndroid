@@ -1,6 +1,5 @@
 package com.yuan.learnproject.presenter;
 
-import com.yuan.learnproject.base.BaseMvpPresenter;
 import com.yuan.learnproject.bean.articles.MainArticleBean;
 import com.yuan.learnproject.contract.KnowledgeContract;
 import com.yuan.learnproject.rx.CommonSubscriber;
@@ -22,13 +21,15 @@ public class KnowledgePresenter extends CommonCollectPresenter<KnowledgeContract
 
     @Override
     public void getKnowledgeList(int page, int cid) {
-        mModel.getKnowledgeList(page, cid)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
-                    @Override
-                    public void onNext(MainArticleBean mainArticleBean) {
-                        mView.showResult(mainArticleBean);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getKnowledgeList(page, cid)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
+                        @Override
+                        public void onNext(MainArticleBean mainArticleBean) {
+                            mView.showResult(mainArticleBean);
+                        }
+                    });
+        }
     }
 }

@@ -24,13 +24,15 @@ public class ProjectTreePresenter extends BaseMvpPresenter<ProjectTreeContract.P
 
     @Override
     public void getProjectTree() {
-        mModel.getProjectTree()
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<List<ProjectTreeBean>>(mView) {
-                    @Override
-                    public void onNext(List<ProjectTreeBean> projectTreeBeans) {
-                        mView.showProjectTree(projectTreeBeans);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getProjectTree()
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<List<ProjectTreeBean>>(mView) {
+                        @Override
+                        public void onNext(List<ProjectTreeBean> projectTreeBeans) {
+                            mView.showProjectTree(projectTreeBeans);
+                        }
+                    });
+        }
     }
 }

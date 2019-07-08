@@ -138,7 +138,7 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
         //ViewPager and tab layout
         PagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), initFragments());
         mViewPager.setScrollable(false);
-        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.setOffscreenPageLimit(adapter.getCount());
         mViewPager.setAdapter(adapter);
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

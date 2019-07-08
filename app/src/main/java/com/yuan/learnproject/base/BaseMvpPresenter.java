@@ -16,7 +16,7 @@ public class BaseMvpPresenter<M, V extends BaseContract.BaseView> implements Bas
 
     public BaseMvpPresenter(M model, V view) {
         mModel = model;
-        mView = view;
+        attachView(view);
         initContext();
     }
 
@@ -26,6 +26,18 @@ public class BaseMvpPresenter<M, V extends BaseContract.BaseView> implements Bas
         } else {
             mContext = (Activity) mView;
         }
+    }
+
+    public void attachView(V view) {
+        this.mView = view;
+    }
+
+    public void detachView() {
+        this.mView = null;
+    }
+
+    public boolean isViewAttached() {
+        return mView != null;
     }
 
 }

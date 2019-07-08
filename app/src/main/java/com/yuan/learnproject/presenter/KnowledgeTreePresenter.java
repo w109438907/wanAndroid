@@ -24,13 +24,15 @@ public class KnowledgeTreePresenter extends BaseMvpPresenter<KnowledgeTreeContra
 
     @Override
     public void getKnowledgeData() {
-        mModel.getKnowledgeTree()
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<List<TreesBean>>(mView) {
-                    @Override
-                    public void onNext(List<TreesBean> treesBeans) {
-                        mView.showTreeData(treesBeans);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getKnowledgeTree()
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<List<TreesBean>>(mView) {
+                        @Override
+                        public void onNext(List<TreesBean> treesBeans) {
+                            mView.showTreeData(treesBeans);
+                        }
+                    });
+        }
     }
 }

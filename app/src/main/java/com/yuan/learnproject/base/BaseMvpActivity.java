@@ -38,6 +38,7 @@ public abstract class BaseMvpActivity <T extends BaseMvpPresenter> extends AppCo
 
     @Override
     protected void onDestroy() {
+        mPresenter.detachView();
         super.onDestroy();
         if(mUnbinder !=Unbinder.EMPTY){
             mUnbinder.unbind();

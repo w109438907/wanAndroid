@@ -21,13 +21,15 @@ public class ProjectPresenter extends CommonCollectPresenter<ProjectContract.Pro
 
     @Override
     public void getProject(int page, int cid) {
-        mModel.getProject(page, cid)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
-                    @Override
-                    public void onNext(MainArticleBean mainArticleBean) {
-                        mView.showProject(mainArticleBean);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getProject(page, cid)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<MainArticleBean>(mView) {
+                        @Override
+                        public void onNext(MainArticleBean mainArticleBean) {
+                            mView.showProject(mainArticleBean);
+                        }
+                    });
+        }
     }
 }

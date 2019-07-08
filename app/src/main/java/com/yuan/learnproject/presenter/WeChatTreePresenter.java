@@ -24,13 +24,15 @@ public class WeChatTreePresenter extends BaseMvpPresenter<WeChatTreeContract.WeC
 
     @Override
     public void getWeChatChapters() {
-        mModel.getWeChatChapters()
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<List<WeChatChapterBean>>(mView) {
-                    @Override
-                    public void onNext(List<WeChatChapterBean> weChatChapterBeans) {
-                        mView.showResult(weChatChapterBeans);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.getWeChatChapters()
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<List<WeChatChapterBean>>(mView) {
+                        @Override
+                        public void onNext(List<WeChatChapterBean> weChatChapterBeans) {
+                            mView.showResult(weChatChapterBeans);
+                        }
+                    });
+        }
     }
 }

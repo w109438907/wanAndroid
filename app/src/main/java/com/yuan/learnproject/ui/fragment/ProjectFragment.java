@@ -175,6 +175,9 @@ public class ProjectFragment extends BaseFragment<ProjectPresenter> implements P
     public void showProject(MainArticleBean mainArticleBean) {
         List<MainArticleDataBean> data = mainArticleBean.getDatas();
         if (data == null) {
+            if (mSmartRefresh == null) {
+                return;
+            }
             if (mSmartRefresh.getState() == RefreshState.Loading) {
                 mSmartRefresh.finishLoadMore(false);
             }
@@ -183,7 +186,7 @@ public class ProjectFragment extends BaseFragment<ProjectPresenter> implements P
             }
             return;
         }
-        if (mSmartRefresh.getState() == RefreshState.Refreshing) {
+        if (mSmartRefresh != null && mSmartRefresh.getState() == RefreshState.Refreshing) {
             mSmartRefresh.finishRefresh(true);
         }
         if (isRefresh) {

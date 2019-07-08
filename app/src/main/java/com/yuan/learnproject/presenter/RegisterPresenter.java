@@ -23,13 +23,15 @@ public class RegisterPresenter extends
 
     @Override
     public void doRegister(String username, String password, String rePassword) {
-        mModel.register(username, password, rePassword)
-                .compose(RxHttpResponseTransformer.compatResult())
-                .subscribe(new CommonSubscriber<LoginResponseBean>(mView) {
-                    @Override
-                    public void onNext(LoginResponseBean loginResponseBean) {
-                        mView.onSuccess(loginResponseBean);
-                    }
-                });
+        if (isViewAttached()) {
+            mModel.register(username, password, rePassword)
+                    .compose(RxHttpResponseTransformer.compatResult())
+                    .subscribe(new CommonSubscriber<LoginResponseBean>(mView) {
+                        @Override
+                        public void onNext(LoginResponseBean loginResponseBean) {
+                            mView.onSuccess(loginResponseBean);
+                        }
+                    });
+        }
     }
 }
